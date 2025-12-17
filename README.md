@@ -1,6 +1,4 @@
-Here is the formatted content in Markdown, ready to be pasted into your `README.md` file. I have enhanced the structure with syntax highlighting, tables, and a **Mermaid.js** diagram for the architecture, which GitHub renders automatically.
 
-```markdown
 # 📘 Knowledge-Base Search Engine (RAG System)
 
 > **A smart document search engine using Retrieval-Augmented Generation (RAG).**
