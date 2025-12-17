@@ -13,7 +13,7 @@
 ## 🎥 Demo Video
 
 👉 **Watch the project demo here:**  
-**[Google Drive Video Demo]](https://drive.google.com/drive/folders/1cqlM7S8ptZMbOkUGsVEJghHE-YQ08s7v?usp=sharing)** 
+**Google Drive Video Demo** (add your link here)
 
 > Upload a document → Ask a question → Get a document-grounded AI answer
 
@@ -59,6 +59,8 @@ Retrieval-Augmented Generation (RAG) combines:
 ---
 
 ## 🏗️ System Architecture
+
+> Rendered inside a code block to keep GitHub formatting clean
 
 User
 │
@@ -129,6 +131,11 @@ knowledge-base-rag/
 └── README.md
 
 
+---
+
+## 🔄 API Endpoints
+
+### 📤 Upload Document
 
 - Content-Type: `multipart/form-data`
 - Field name: `file`
@@ -139,184 +146,166 @@ knowledge-base-rag/
 {
   "message": "Document ingested successfully"
 }
-
-❓ **Ask a Question**
-
-   POST /query
-
-  **Request**
-
+POST /query
 {
   "question": "What is Retrieval Augmented Generation?"
 }
-
- **Response**
-
 {
   "answer": "Retrieval Augmented Generation is a technique where relevant documents..."
 }
-
-
 🔍 How the System Works
-
 1️⃣ Document Ingestion
 
-- User uploads a document
+User uploads a document
 
-- Text is extracted
+Text is extracted
 
-- Text is cleaned and validated
+Text is cleaned and validated
 
-- Content is split into chunks
+Content is split into chunks
 
-- Each chunk is converted into an embedding (Gemini)
+Each chunk is converted into an embedding (Gemini)
 
 2️⃣ Vector Storage
 
-- Embeddings stored in an in-memory vector store
+Embeddings stored in an in-memory vector store
 
-- Each entry contains { text, embedding }
+Each entry contains { text, embedding }
 
 3️⃣ Query Processing
 
-- User query → embedding (Gemini)
+User query → embedding (Gemini)
 
-- Cosine similarity used to retrieve relevant chunks
+Cosine similarity used to retrieve relevant chunks
 
 4️⃣ Answer Generation
 
-- Top-K chunks passed as context
+Top-K chunks passed as context
 
-- Groq LLM generates an answer strictly from context
+Groq LLM generates an answer strictly from context
 
 🤖 Why Gemini + Groq?
-
 🔹 Gemini (Embeddings)
 
-- Free tier
+Free tier
 
-- High-quality semantic embeddings
+High-quality semantic embeddings
 
-- Ideal for retrieval tasks
+Ideal for retrieval tasks
 
 🔹 Groq (Generation)
 
-- Free and fast
+Free and fast
 
-- Stable OpenAI-compatible API
+Stable OpenAI-compatible API
 
-- Avoids Gemini SDK instability for text generation
+Avoids Gemini SDK instability for text generation
 
-- The RAG architecture is provider-agnostic, allowing different providers for retrieval and generation without changing the system design.
+The RAG architecture is provider-agnostic, allowing different providers for
+retrieval and generation without changing the system design.
 
-🚧 **Challenges Faced & Solutions**
-
-❌ **1. PDF Text Extraction Issues**
+🚧 Challenges Faced & Solutions
+❌ 1. PDF Text Extraction Issues
 
 Problem:
-- Some PDFs returned binary garbage (/Font, endobj, symbols)
+Some PDFs returned binary garbage (/Font, endobj, symbols)
 
 Cause:
-- Font-encoded or encrypted PDFs
+Font-encoded or encrypted PDFs
 
 Solution:
 
-- Strong text cleaning
+Strong text cleaning
 
-- Validation to reject unsupported PDFs
+Validation to reject unsupported PDFs
 
-- Recommendation to use text-based PDFs or OCR
+Recommendation to use text-based PDFs or OCR
 
-❌ **2. Gemini Model Errors (404 / Unsupported)**
+❌ 2. Gemini Model Errors (404 / Unsupported)
 
 Problem:
-- Gemini generation models returned errors
+Gemini generation models returned errors
 
 Solution:
 
-- Retained Gemini for embeddings
+Retained Gemini for embeddings
 
-- Switched to Groq for text generation
+Switched to Groq for text generation
 
-- Improved reliability without changing architecture
+Improved reliability without changing architecture
 
 ❌ 3. Slow Ingestion Time
 
 Problem:
-- Large PDFs caused slow embedding generation
+Large PDFs caused slow embedding generation
 
 Solution:
 
-- Limited chunk count for demo
+Limited chunk count for demo
 
-- Explained ingestion as an offline step
+Explained ingestion as an offline step
 
-❌ **4. Data Loss on Server Restart**
+❌ 4. Data Loss on Server Restart
 
 Problem:
-- Vector DB resets on restart
+Vector DB resets on restart
 
 Cause:
-- In-memory storage
+In-memory storage
 
 Solution:
 
-- Documented limitation
+Documented limitation
 
-**Suggested production alternatives**:
-- FAISS, Chroma, MongoDB Atlas Vector Search
+Suggested production alternatives:
+FAISS, Chroma, MongoDB Atlas Vector Search
 
-📄 ***PDF Support (Important Note)***
+📄 PDF Support (Important Note)
 
 ✔ Supported:
 
-- Text-based PDFs (LibreOffice, research papers)
+Text-based PDFs (LibreOffice, research papers)
 
-- TXT files
+TXT files
 
-❌ **Not supported:**
+❌ Not supported:
 
-- Scanned PDFs
+Scanned PDFs
 
-- Image-only PDFs
+Image-only PDFs
 
-- Font-encoded PDFs (Google Docs / Canva)
+Font-encoded PDFs (Google Docs / Canva)
 
-- OCR can be integrated in future versions.
+OCR can be integrated in future versions.
 
-▶️ **How to Run Locally**
-
+▶️ How to Run Locally
 1️⃣ Clone Repository
-- git clone https://github.com/your-username/knowledge-base-rag.git
-- cd knowledge-base-rag
 
-2️⃣ Install Dependencies
-- npm install
+git clone https://github.com/your-username/knowledge-base-rag.git
+cd knowledge-base-rag
+
+npm install
 
 3️⃣ Setup Environment Variables
 
-- Create .env file:
+Create .env file:
 
-- GEMINI_API_KEY=your_gemini_key
-- GROQ_API_KEY=your_groq_key
+GEMINI_API_KEY=your_gemini_key
+GROQ_API_KEY=your_groq_key
 
-4️⃣ Start Server
-- node backend/server.js
+node backend/server.js
 
-
-Server runs at:
-
-- http://localhost:3000 // port might be different for you
+http://localhost:3000
 
 🧪 Demo Flow
 
-- Upload a TXT or text-based PDF
+Upload a TXT or text-based PDF
 
-- Wait for ingestion
+Wait for ingestion
 
-- **Ask a question**
+Ask a question
 
-- Receive a grounded AI answer
+Receive a grounded AI answer
 
 🏁 Conclusion
 
@@ -326,7 +315,3 @@ storage limitations.
 
 The focus is on robust architecture, clarity, and explainability rather than
 over-engineering.
-
----
-   
-
